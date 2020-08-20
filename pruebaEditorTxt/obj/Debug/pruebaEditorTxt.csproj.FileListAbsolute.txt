@@ -1,0 +1,17 @@
+C:\Users\matej\source\repos\pruebaEditorTxt\pruebaEditorTxt\bin\Debug\pruebaEditorTxt.exe.config
+C:\Users\matej\source\repos\pruebaEditorTxt\pruebaEditorTxt\bin\Debug\pruebaEditorTxt.exe
+C:\Users\matej\source\repos\pruebaEditorTxt\pruebaEditorTxt\bin\Debug\pruebaEditorTxt.pdb
+C:\Users\matej\source\repos\pruebaEditorTxt\pruebaEditorTxt\obj\Debug\MainWindow.g.cs
+C:\Users\matej\source\repos\pruebaEditorTxt\pruebaEditorTxt\obj\Debug\App.g.cs
+C:\Users\matej\source\repos\pruebaEditorTxt\pruebaEditorTxt\obj\Debug\pruebaEditorTxt_MarkupCompile.cache
+C:\Users\matej\source\repos\pruebaEditorTxt\pruebaEditorTxt\obj\Debug\pruebaEditorTxt_MarkupCompile.lref
+C:\Users\matej\source\repos\pruebaEditorTxt\pruebaEditorTxt\obj\Debug\MainWindow.baml
+C:\Users\matej\source\repos\pruebaEditorTxt\pruebaEditorTxt\obj\Debug\pruebaEditorTxt.g.resources
+C:\Users\matej\source\repos\pruebaEditorTxt\pruebaEditorTxt\obj\Debug\pruebaEditorTxt.Properties.Resources.resources
+C:\Users\matej\source\repos\pruebaEditorTxt\pruebaEditorTxt\obj\Debug\pruebaEditorTxt.csproj.GenerateResource.cache
+C:\Users\matej\source\repos\pruebaEditorTxt\pruebaEditorTxt\obj\Debug\pruebaEditorTxt.csproj.CoreCompileInputs.cache
+C:\Users\matej\source\repos\pruebaEditorTxt\pruebaEditorTxt\obj\Debug\pruebaEditorTxt.exe
+C:\Users\matej\source\repos\pruebaEditorTxt\pruebaEditorTxt\obj\Debug\pruebaEditorTxt.pdb
+C:\Users\matej\source\repos\pruebaEditorTxt\pruebaEditorTxt\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\matej\source\repos\pruebaEditorTxt\pruebaEditorTxt\obj\Debug\Themes\Generic.baml
+C:\Users\matej\source\repos\pruebaEditorTxt\pruebaEditorTxt\obj\Debug\pruebaEditorTxt.csprojAssemblyReference.cache

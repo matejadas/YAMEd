@@ -1,0 +1,71 @@
+﻿<Window x:Class="pruebaEditorTxt.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:pruebaEditorTxt"
+        xmlns:CustomTxt="clr-namespace:pruebaEditorTxt"
+        mc:Ignorable="d"
+        Title="YATE (Yet Another Text Editor)" Height="768" Width="1366" Background="Silver" Closing="Window_Closing">
+    <!--Definimos comandos-->
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Open" CanExecute="Open_CanExecute" Executed="Open_Executed" />
+        <CommandBinding Command="ApplicationCommands.Save" CanExecute="Save_CanExecute" Executed="Save_Executed" />
+        <CommandBinding Command="ApplicationCommands.SaveAs" CanExecute="SaveAs_CanExecute" Executed="SaveAs_Executed" />
+    </Window.CommandBindings>
+    <!--Asignamos atajos de teclado a los comandos-->
+    <Window.InputBindings>
+        <KeyBinding Command="ApplicationCommands.Open" Gesture="CTRL+O" />
+        <KeyBinding Command="ApplicationCommands.Save" Gesture="CTRL+S" />
+        <KeyBinding Command="ApplicationCommands.SaveAs" Gesture="CTRL+SHIFT+S" />
+    </Window.InputBindings>
+    <Grid x:Name="grdPrincipal">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Menu Grid.Column="0" Grid.Row="0" Name="menuMenuSup" HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="{Binding ElementName=grdPrincipal,Path=ActualWidth}" KeyboardNavigation.TabNavigation="None">
+            <MenuItem Header="_Archivo" Name="menuArchivo">
+                <!--Con Command="..." llamamos al comando-->
+                <MenuItem Header="Nuevo" x:Name="menuNuevo" InputGestureText="Ctrl+N" Click="menuNuevo_Click"/>
+                <MenuItem Header="Abrir" x:Name="menuAbrir" InputGestureText="Ctrl+O" Command="ApplicationCommands.Open" />
+                <MenuItem Header="Guardar" x:Name="menuGuardar" InputGestureText="Ctrl+S" Command="ApplicationCommands.Save" />
+                <MenuItem Header="Guardar como..." x:Name="menuGuardarComo" InputGestureText="Ctrl+Shift+S" Command="ApplicationCommands.SaveAs" />
+                <MenuItem Header="_Cerrar" x:Name="menuCerrar" Click="menuCerrar_Click"/>
+                <Separator/>
+                <MenuItem Header="_Salir" x:Name="menuSalir" InputGestureText="Alt+F4" Click="menuSalir_Click"/>
+            </MenuItem>
+            <MenuItem Header="_Edición" Name="menuEdicion">
+                <MenuItem Command="Undo" Name="menuDeshacer"/>
+                <MenuItem Command="Redo" Name="menuRehacer"/>
+                <Separator />
+                <MenuItem Command="Copy" Name="menuCopiar"/>
+                <MenuItem Command="Cut" Name="menuCortar"/>
+                <MenuItem Command="Paste" Name="menuPegar"/>
+            </MenuItem>
+            <MenuItem Header ="_Ver" Name="menuVer">
+                <MenuItem Header="_Fuente..." x:Name="menuFuente" Click="menuFuente_Click"/>
+                <MenuItem Header="_Tema" Name="menuTema">
+                    <MenuItem Header="Claro" Name="menuClaro" Click="menuClaro_Click"/>
+                    <MenuItem Header="Oscuro" Name="menuOscuro" Click="menuOscuro_Click"/>
+                </MenuItem>
+            </MenuItem>
+            <Button x:Name="btnVistaPrevia" Content="Vista previa" Background="#FFF0F0F0" Click="btnVistaPrevia_Click"/>
+        </Menu>
+        <Grid x:Name="grdContenido" Grid.Column="0" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <!--TextBox custom para poder modificar los 8 espacios del tabulador a 4-->
+            <CustomTxt:TextBoxCustom x:Name="txtNuevo" Grid.Column="0" Grid.ColumnSpan="2" FontFamily="Consolas" FontSize="14" VerticalAlignment="Stretch" AcceptsReturn="True" AcceptsTab="True" IsTabStop="False" VerticalScrollBarVisibility="Auto" Margin="10, 10, 10, 10" TextWrapping="Wrap" HorizontalScrollBarVisibility="Auto" TextChanged="txtNuevo_TextChanged">
+                <TextBox.Effect>
+                    <DropShadowEffect Direction="135" Color="#FFBBBBBB"/>
+                </TextBox.Effect>
+            </CustomTxt:TextBoxCustom>
+        </Grid>
+    </Grid>
+</Window>
