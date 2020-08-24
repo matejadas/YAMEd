@@ -131,6 +131,25 @@ namespace pruebaEditorTxt
             return sb;
         }
 
+        public static StringBuilder ReemplazarImagenes(string txt)
+        {
+            string patron = @"!\[.*\]\(.*\)";
+            MatchCollection m = Regex.Matches(txt, patron);
+
+            foreach (Match item in m)
+            {
+                string imagenMd = item.Value;
+                string textoAlt = RecuperarTextoCentral(imagenMd, "[", "]");
+                string rutaImagen = RecuperarTextoCentral(imagenMd, "(", ")");
+
+                //txt = txt.Replace(item.Value, $"<a href = '{rutaImagen}' target='_blank'>{textoAlt}</a>");
+                txt = txt.Replace(item.Value, $"<img src='{rutaImagen}' alt='{textoAlt}'>");
+            }
+
+            StringBuilder sb = new StringBuilder(txt);
+            return sb;
+        }
+
         public static StringBuilder ReemplazarEnlaces(string txt)
         {
             string patron = @"\[.*\]\(.*\)";

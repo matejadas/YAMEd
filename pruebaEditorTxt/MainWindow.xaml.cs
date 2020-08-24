@@ -233,6 +233,11 @@ namespace pruebaEditorTxt
             // Líneas horizontales
             txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "***", "<hr>");
             txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "---", "<hr>");
+
+            // Imágenes
+            txtMostrar = Reemplazos.ReemplazarImagenes(txtMostrar.ToString());
+
+            // Enlaces
             txtMostrar = Reemplazos.ReemplazarEnlaces(txtMostrar.ToString());
 
             ////Bloque de código
