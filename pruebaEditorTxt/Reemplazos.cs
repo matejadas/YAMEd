@@ -24,9 +24,33 @@ namespace pruebaEditorTxt
             return txt;
         }
 
+        public static StringBuilder ReemplazarParrafos(StringBuilder txt)
+        {
+            List<string> lineas = new List<string>(Regex.Split(txt.ToString(), Environment.NewLine));
+
+            for (int i = 1; i < lineas.Count; i++)
+            {
+                if (lineas[i] == String.Empty)
+                {
+                    lineas[i - 1] += "</p>";
+                    lineas[i] = "<p>";
+                }
+            }
+
+            StringBuilder sb = new StringBuilder();
+
+            foreach (string linea in lineas)
+            {
+                sb.Append(linea);
+            }
+
+            return sb;
+        }
+
         public static StringBuilder BuscarReemplazar(StringBuilder txt, string md, string htmlInicio, string htmlCierre)
         {
             // Busca una etiqueta Markdown y la sustituye por una html de inicio y una de cierre, p.ej. # -> <h1></h1>
+            // Usaremos este método para tags de Markdown que afectan a UNA SOLA LÍNEA, como los encabezados
 
             if (txt.ToString().Contains(md))
             {
@@ -62,31 +86,11 @@ namespace pruebaEditorTxt
             }            
         }
 
-        public static StringBuilder ReemplazarParrafos(StringBuilder txt)
-        {
-            List<string> lineas = new List<string>(Regex.Split(txt.ToString(), Environment.NewLine));
-
-            for(int i=1; i<lineas.Count; i++)
-            {
-                if(lineas[i] == String.Empty)
-                {
-                    lineas[i - 1] += "</p>";
-                    lineas[i] = "<p>";
-                }
-            }
-
-            StringBuilder sb = new StringBuilder();
-
-            foreach(string linea in lineas)
-            {
-                sb.Append(linea);
-            }
-
-            return sb;
-        }
-
         public static StringBuilder ReemplazarBloque(string txt, string md, string htmlAbre, string htmlCierra)
         {
+            // Busca una etiqueta Markdown y la sustituye por una html de inicio y una de cierre, p.ej. ** -> <strong></strong>
+            // Usaremos este método para tags de Markdown que afectan a VARIAS LÍNEAS
+
             bool existeTag = false;
 
             // Comprobamos que existe la etiqueta markdown
@@ -142,7 +146,6 @@ namespace pruebaEditorTxt
                 string textoAlt = RecuperarTextoCentral(imagenMd, "[", "]");
                 string rutaImagen = RecuperarTextoCentral(imagenMd, "(", ")");
 
-                //txt = txt.Replace(item.Value, $"<a href = '{rutaImagen}' target='_blank'>{textoAlt}</a>");
                 txt = txt.Replace(item.Value, $"<img src='{rutaImagen}' alt='{textoAlt}'>");
             }
 
@@ -208,6 +211,38 @@ namespace pruebaEditorTxt
             }
 
             return result;
+        }
+
+        public static StringBuilder ListasOrdenadas(string txt)
+        {
+            // Dividimos el texto en líneas
+            List<string> lineasTxt = new List<string>(Regex.Split(txt, Environment.NewLine));
+
+            StringBuilder sb = new StringBuilder();
+
+            // Buscamos las líneas que empiecen por el patrón
+            string patron = @"\d*\. ";
+            MatchCollection m = Regex.Matches(txt, patron);
+
+            for(int i = 0; i < lineasTxt.Count; i++)
+            {
+                for(int j = 0; j < m.Count; j++)
+                {
+                    if (lineasTxt[i].StartsWith(m[j].ToString()))
+                    {
+                        lineasTxt[i] = lineasTxt[i].Insert(0, "<li>");
+                        lineasTxt[i] += "</li>";
+                    }
+                }
+
+                sb.Append(lineasTxt[i]);
+                sb.AppendLine();
+            }
+
+            // Ponemos los <li></li> a cada línea
+            // Ponemos los <ol></ol> al bloque
+
+            return sb;
         }
     }
 }

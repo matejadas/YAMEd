@@ -230,6 +230,9 @@ namespace pruebaEditorTxt
         {
             StringBuilder txtMostrar = new StringBuilder(txt);
 
+            // Listas ordenadas
+            txtMostrar = Reemplazos.ListasOrdenadas(txtMostrar.ToString());
+
             // Líneas horizontales
             txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "***", "<hr>");
             txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "---", "<hr>");
@@ -462,5 +465,5 @@ namespace pruebaEditorTxt
     }
 }
 
+// TODO Listas ordenadas y sin ordenar
 // TODO Bloques de código
-// TODO Terminar enlaces con función de extraer texto
