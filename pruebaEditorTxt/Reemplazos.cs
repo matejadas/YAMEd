@@ -24,28 +24,6 @@ namespace pruebaEditorTxt
             return txt;
         }
 
-        public static StringBuilder ReemplazarParrafos(StringBuilder txt)
-        {
-            List<string> lineas = new List<string>(Regex.Split(txt.ToString(), Environment.NewLine));
-
-            for (int i = 1; i < lineas.Count; i++)
-            {
-                if (lineas[i] == String.Empty)
-                {
-                    lineas[i - 1] += "</p>";
-                    lineas[i] = "<p>";
-                }
-            }
-
-            StringBuilder sb = new StringBuilder();
-
-            foreach (string linea in lineas)
-            {
-                sb.Append(linea);
-            }
-
-            return sb;
-        }
 
         public static StringBuilder BuscarReemplazar(StringBuilder txt, string md, string htmlInicio, string htmlCierre)
         {
@@ -84,6 +62,29 @@ namespace pruebaEditorTxt
             {
                 return txt;
             }            
+        }
+
+        public static StringBuilder ReemplazarParrafos(StringBuilder txt)
+        {
+            List<string> lineas = new List<string>(Regex.Split(txt.ToString(), Environment.NewLine));
+
+            for (int i = 1; i < lineas.Count; i++)
+            {
+                if (lineas[i] == String.Empty)
+                {
+                    lineas[i - 1] += "</p>";
+                    lineas[i] = lineas[i].Insert(0, "<p>");
+                }
+            }
+
+            StringBuilder sb = new StringBuilder();
+
+            foreach (string linea in lineas)
+            {
+                sb.Append(linea);
+            }
+
+            return sb;
         }
 
         public static StringBuilder ReemplazarBloque(string txt, string md, string htmlAbre, string htmlCierra)
@@ -213,20 +214,23 @@ namespace pruebaEditorTxt
             return result;
         }
 
-        public static StringBuilder ListasOrdenadas(string txt)
+        public static StringBuilder CrearListasOrdenadas(string txt)
         {
             // Dividimos el texto en líneas
             List<string> lineasTxt = new List<string>(Regex.Split(txt, Environment.NewLine));
 
+            // Aquí iremos guardando todas líneas, modificadas o no, para devolverlas al final
             StringBuilder sb = new StringBuilder();
 
-            // Buscamos las líneas que empiecen por el patrón
+            // Buscamos las líneas que empiecen por el patrón. Las coincidencias se añadirán al MatchCollection (pero no la línea entera)
             string patron = @"\d*\. ";
             MatchCollection m = Regex.Matches(txt, patron);
 
-            for(int i = 0; i < lineasTxt.Count; i++)
+            // Las líneas del texto que empiecen por algún elemento del MatchCollection pertenecen a una lista
+            // Ponemos todos los <li></li>
+            for (int i = 0; i < lineasTxt.Count; i++)
             {
-                for(int j = 0; j < m.Count; j++)
+                for (int j = 0; j < m.Count; j++)
                 {
                     if (lineasTxt[i].StartsWith(m[j].ToString()))
                     {
@@ -234,13 +238,46 @@ namespace pruebaEditorTxt
                         lineasTxt[i] += "</li>";
                     }
                 }
-
-                sb.Append(lineasTxt[i]);
-                sb.AppendLine();
             }
 
-            // Ponemos los <li></li> a cada línea
-            // Ponemos los <ol></ol> al bloque
+            // Delimitamos cada <ol>
+            for (int i = 0; i < lineasTxt.Count; i++)
+            {
+                if (lineasTxt[i].StartsWith("<li>"))
+                {
+                    try
+                    {
+                        if (!lineasTxt[i - 2].StartsWith("<li>") && lineasTxt[i - 1] == String.Empty)
+                        {
+                            lineasTxt[i - 1] += "<ol>";
+                        }
+                    }
+                    catch (ArgumentOutOfRangeException)
+                    {
+                        lineasTxt[i] = lineasTxt[i].Insert(0, "<ol>");
+                    }
+
+                    try
+                    {
+                        if (!lineasTxt[i + 2].StartsWith("<li>") && lineasTxt[i + 1] == String.Empty)
+                        {
+                            lineasTxt[i + 1] += "</ol>";
+                        }
+                    }
+                    catch (ArgumentOutOfRangeException)
+                    {
+                        lineasTxt[i] += "</ol>";
+                    }
+                }
+
+            }
+
+            // Añadimos al StringBuilder
+            foreach(string item in lineasTxt)
+            {
+                sb.Append(item);
+                sb.AppendLine();
+            }
 
             return sb;
         }

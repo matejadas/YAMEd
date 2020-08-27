@@ -231,48 +231,45 @@ namespace pruebaEditorTxt
             StringBuilder txtMostrar = new StringBuilder(txt);
 
             // Listas ordenadas
-            txtMostrar = Reemplazos.ListasOrdenadas(txtMostrar.ToString());
+            txtMostrar = Reemplazos.CrearListasOrdenadas(txtMostrar.ToString());
 
-            // Líneas horizontales
-            txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "***", "<hr>");
-            txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "---", "<hr>");
+            //// Líneas horizontales
+            //txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "***", "<hr>");
+            //txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "---", "<hr>");
 
-            // Imágenes
-            txtMostrar = Reemplazos.ReemplazarImagenes(txtMostrar.ToString());
+            //// Imágenes
+            //txtMostrar = Reemplazos.ReemplazarImagenes(txtMostrar.ToString());
 
-            // Enlaces
-            txtMostrar = Reemplazos.ReemplazarEnlaces(txtMostrar.ToString());
+            //// Enlaces
+            //txtMostrar = Reemplazos.ReemplazarEnlaces(txtMostrar.ToString());
 
-            ////Bloque de código
-            //txtMostrar = Reemplazos.ReemplazarBloque(txtMostrar.ToString(), "```", "<pre><code>", "</code></pre>");
+            //// Negrita
+            //txtMostrar = Reemplazos.ReemplazarBloque(txtMostrar.ToString(), "**", "<strong>", "</strong>");
+            //txtMostrar = Reemplazos.ReemplazarBloque(txtMostrar.ToString(), "__", "<strong>", "</strong>");
 
-            // Negrita
-            txtMostrar = Reemplazos.ReemplazarBloque(txtMostrar.ToString(), "**", "<strong>", "</strong>");
-            txtMostrar = Reemplazos.ReemplazarBloque(txtMostrar.ToString(), "__", "<strong>", "</strong>");
+            //// Cursiva
+            //txtMostrar = Reemplazos.ReemplazarBloque(txtMostrar.ToString(), "*", "<em>", "</em>");
+            //txtMostrar = Reemplazos.ReemplazarBloque(txtMostrar.ToString(), "_", "<em>", "</em>");
 
-            // Cursiva
-            txtMostrar = Reemplazos.ReemplazarBloque(txtMostrar.ToString(), "*", "<em>", "</em>");
-            txtMostrar = Reemplazos.ReemplazarBloque(txtMostrar.ToString(), "_", "<em>", "</em>");
+            //// Texto monoespacio
+            //txtMostrar = Reemplazos.ReemplazarBloque(txtMostrar.ToString(), "`", "<code>", "</code>");
 
-            // Texto monoespacio
-            txtMostrar = Reemplazos.ReemplazarBloque(txtMostrar.ToString(), "`", "<code>", "</code>");
+            //// Encabezados
+            //txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "###### ", "</p><h6>", "</h6><p>");
+            //txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "##### ", "</p><h5>", "</h5><p>");
+            //txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "#### ", "</p><h4>", "</h4><p>");
+            //txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "### ", "</p><h3>", "</h3><p>");
+            //txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "## ", "</p><h2>", "</h2><p>");
+            //txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "# ", "</p><h1>", "</h1><p>");
 
-            // Encabezados
-            txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "###### ", "</p><h6>", "</h6><p>");
-            txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "##### ", "</p><h5>", "</h5><p>");
-            txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "#### ", "</p><h4>", "</h4><p>");
-            txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "### ", "</p><h3>", "</h3><p>");
-            txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "## ", "</p><h2>", "</h2><p>");
-            txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "# ", "</p><h1>", "</h1><p>");
-
-            // Citas
-            txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "> ", "<blockquote>", "</blockquote>");
+            //// Citas
+            //txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "> ", "<blockquote>", "</blockquote>");
 
             // Párrafos
             txtMostrar = Reemplazos.ReemplazarParrafos(txtMostrar);
 
             txtMostrar.Insert(0, "<head> <meta charset = 'UTF-8'> </head> <body>");
-            txtMostrar.Append("</body>");
+            txtMostrar.AppendLine("</body>");
 
             return txtMostrar.ToString();
         }
@@ -466,4 +463,5 @@ namespace pruebaEditorTxt
 }
 
 // TODO Listas ordenadas y sin ordenar
+// TODO No poner párrafos dentro de listas
 // TODO Bloques de código
