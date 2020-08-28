@@ -268,8 +268,8 @@ namespace pruebaEditorTxt
             // Párrafos
             txtMostrar = Reemplazos.ReemplazarParrafos(txtMostrar);
 
-            txtMostrar.Insert(0, "<head> <meta charset = 'UTF-8'> </head> <body>");
-            txtMostrar.AppendLine("</body>");
+            txtMostrar.Insert(0, "<html><head><meta charset = 'UTF-8'></head><body>");
+            txtMostrar.AppendLine("</body></html>");
 
             return txtMostrar.ToString();
         }
@@ -463,5 +463,4 @@ namespace pruebaEditorTxt
 }
 
 // TODO Listas ordenadas y sin ordenar
-// TODO No poner párrafos dentro de listas
 // TODO Bloques de código

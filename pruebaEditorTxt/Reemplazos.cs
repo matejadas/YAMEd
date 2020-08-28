@@ -72,8 +72,11 @@ namespace pruebaEditorTxt
             {
                 if (lineas[i] == String.Empty)
                 {
-                    lineas[i - 1] += "</p>";
-                    lineas[i] = lineas[i].Insert(0, "<p>");
+                    if(!lineas[i - 1].EndsWith("</li>"))
+                    {
+                        lineas[i - 1] += "</p>";
+                        lineas[i] = lineas[i].Insert(0, "<p>");
+                    }                    
                 }
             }
 
@@ -236,6 +239,7 @@ namespace pruebaEditorTxt
                     {
                         lineasTxt[i] = lineasTxt[i].Insert(0, "<li>");
                         lineasTxt[i] += "</li>";
+                        lineasTxt[i] = lineasTxt[i].Replace(m[j].ToString(), string.Empty);
                     }
                 }
             }
