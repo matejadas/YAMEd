@@ -226,8 +226,12 @@ namespace pruebaEditorTxt
             StringBuilder sb = new StringBuilder();
 
             // Buscamos las líneas que empiecen por el patrón. Las coincidencias se añadirán al MatchCollection (pero no la línea entera)
-            string patron = @"\d*\. ";
-            MatchCollection m = Regex.Matches(txt, patron);
+            string patronNum = @"\d*\. ";
+            // string patronRomanMay = @"\bM{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})\b\. ";
+            // string patronRomanMin = @"\bm{0,4}(cm|cd|d?c{0,3})(xc|xl|l?x{0,3})(ix|iv|v?i{0,3})\b\. ";
+            // string patronLetrasMay = @"[A-Z]*\. ";
+            // string patronLetrasMin = @"[a-z]*\. ";
+            MatchCollection m = Regex.Matches(txt, patronNum);
 
             // Las líneas del texto que empiecen por algún elemento del MatchCollection pertenecen a una lista
             // Ponemos todos los <li></li>
@@ -245,6 +249,7 @@ namespace pruebaEditorTxt
             }
 
             // Delimitamos cada <ol>
+            //  type='{}'
             for (int i = 0; i < lineasTxt.Count; i++)
             {
                 if (lineasTxt[i].StartsWith("<li>"))
