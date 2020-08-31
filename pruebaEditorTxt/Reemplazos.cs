@@ -227,8 +227,8 @@ namespace pruebaEditorTxt
 
             // Las listas no sólo empiezan por 1. , sino que hay más posibilidades, letras o números romanos en mayúsculas o minúsculas
             string patronNum = @"\d*\. ";
-            string patronRomanMay = @"\bM{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})\b\. ";
-            string patronRomanMin = @"\bm{0,4}(cm|cd|d?c{0,3})(xc|xl|l?x{0,3})(ix|iv|v?i{0,3})\b\. ";
+            //string patronRomanMay = @"\bM{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})\b\. ";
+            //string patronRomanMin = @"\bm{0,4}(cm|cd|d?c{0,3})(xc|xl|l?x{0,3})(ix|iv|v?i{0,3})\b\. ";
             string patronLetrasMay = @"[A-Z]*\. ";
             string patronLetrasMin = @"[a-z]*\. ";
 
@@ -284,6 +284,46 @@ namespace pruebaEditorTxt
             return sb;
         }
 
+        public static StringBuilder CrearListasSinOrdenar(string txt)
+        {
+            // Dividimos el texto en líneas
+            List<string> lineasTxt = new List<string>(Regex.Split(txt, Environment.NewLine));
+
+            // Aquí iremos guardando todas líneas, modificadas o no, para devolverlas al final
+            StringBuilder sb = new StringBuilder();
+
+            string patronGuion = @"\- ";
+            string patronMas = @"\+ ";
+            string patronAsterisco = @"\* ";
+
+            List<string> patrones = new List<string>
+            {
+                patronGuion,
+                patronMas,
+                patronAsterisco
+            };
+
+            foreach (string patron in patrones)
+            {
+                MatchCollection m = Regex.Matches(txt, patron);
+
+                // Ponemos todos los <li></li>
+                lineasTxt = DelimitarLi(m, lineasTxt);
+
+                // Delimitamos los <ul></ul>
+                lineasTxt = DelimitarUl(lineasTxt);
+            }
+
+            // Añadimos al StringBuilder
+            foreach (string item in lineasTxt)
+            {
+                sb.Append(item);
+                sb.AppendLine();
+            }
+
+            return sb;
+        }
+
         private static List<string> DelimitarLi(MatchCollection matchCol, List<string> lista)
         {
             // Las líneas del texto que empiecen por algún elemento del MatchCollection pertenecen a una lista
@@ -303,39 +343,74 @@ namespace pruebaEditorTxt
             return lista;
         }
 
-        private static List<string> DelimitarOl(List<string> lista, string tipo)
+        private static List<string> DelimitarOl(List<string> lineas, string tipo)
         {
-            for (int i = 0; i < lista.Count; i++)
+            for (int i = 0; i < lineas.Count; i++)
             {
-                if (lista[i].StartsWith("<li>"))
+                if (lineas[i].StartsWith("<li>"))
                 {
                     try
                     {
-                        if (!lista[i - 2].StartsWith("<li>") && lista[i - 1] == String.Empty)
+                        if (!lineas[i - 2].StartsWith("<li>") && lineas[i - 1] == String.Empty)
                         {
-                            lista[i - 1] += $"<ol type='{tipo}'>";
+                            lineas[i - 1] += $"<ol type='{tipo}'>";
                         }
                     }
                     catch (ArgumentOutOfRangeException)
                     {
-                        lista[i] = lista[i].Insert(0, $"<ol type='{tipo}'>");
+                        lineas[i] = lineas[i].Insert(0, $"<ol type='{tipo}'>");
                     }
 
                     try
                     {
-                        if (!lista[i + 2].StartsWith("<li>") && lista[i + 1] == String.Empty)
+                        if (!lineas[i + 2].StartsWith("<li>") && lineas[i + 1] == String.Empty)
                         {
-                            lista[i + 1] += "</ol>";
+                            lineas[i + 1] += "</ol>";
                         }
                     }
                     catch (ArgumentOutOfRangeException)
                     {
-                        lista[i] += "</ol>";
+                        lineas[i] += "</ol>";
                     }
                 }
             }
 
-            return lista;
+            return lineas;
+        }
+
+        private static List<string> DelimitarUl (List<string> lineas)
+        {
+            for (int i = 0; i < lineas.Count; i++)
+            {
+                if (lineas[i].StartsWith("<li>"))
+                {
+                    try
+                    {
+                        if (!lineas[i - 2].StartsWith("<li>") && lineas[i - 1] == String.Empty)
+                        {
+                            lineas[i - 1] += $"<ul>";
+                        }
+                    }
+                    catch (ArgumentOutOfRangeException)
+                    {
+                        lineas[i] = lineas[i].Insert(0, $"<ul>");
+                    }
+
+                    try
+                    {
+                        if (!lineas[i + 2].StartsWith("<li>") && lineas[i + 1] == String.Empty)
+                        {
+                            lineas[i + 1] += "</ul>";
+                        }
+                    }
+                    catch (ArgumentOutOfRangeException)
+                    {
+                        lineas[i] += "</ul>";
+                    }
+                }
+            }
+
+            return lineas;
         }
     }
 }

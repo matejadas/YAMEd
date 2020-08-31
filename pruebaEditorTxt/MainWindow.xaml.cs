@@ -232,10 +232,11 @@ namespace pruebaEditorTxt
 
             // Listas ordenadas
             txtMostrar = Reemplazos.CrearListasOrdenadas(txtMostrar.ToString());
+            txtMostrar = Reemplazos.CrearListasSinOrdenar(txtMostrar.ToString());
 
-            //// Líneas horizontales
-            //txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "***", "<hr>");
-            //txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "---", "<hr>");
+            // Líneas horizontales
+            txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "***", "<hr>");
+            txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "---", "<hr>");
 
             //// Imágenes
             //txtMostrar = Reemplazos.ReemplazarImagenes(txtMostrar.ToString());
@@ -243,13 +244,13 @@ namespace pruebaEditorTxt
             //// Enlaces
             //txtMostrar = Reemplazos.ReemplazarEnlaces(txtMostrar.ToString());
 
-            //// Negrita
-            //txtMostrar = Reemplazos.ReemplazarBloque(txtMostrar.ToString(), "**", "<strong>", "</strong>");
-            //txtMostrar = Reemplazos.ReemplazarBloque(txtMostrar.ToString(), "__", "<strong>", "</strong>");
+            // Negrita
+            txtMostrar = Reemplazos.ReemplazarBloque(txtMostrar.ToString(), "**", "<strong>", "</strong>");
+            txtMostrar = Reemplazos.ReemplazarBloque(txtMostrar.ToString(), "__", "<strong>", "</strong>");
 
-            //// Cursiva
-            //txtMostrar = Reemplazos.ReemplazarBloque(txtMostrar.ToString(), "*", "<em>", "</em>");
-            //txtMostrar = Reemplazos.ReemplazarBloque(txtMostrar.ToString(), "_", "<em>", "</em>");
+            // Cursiva
+            txtMostrar = Reemplazos.ReemplazarBloque(txtMostrar.ToString(), "*", "<em>", "</em>");
+            txtMostrar = Reemplazos.ReemplazarBloque(txtMostrar.ToString(), "_", "<em>", "</em>");
 
             //// Texto monoespacio
             //txtMostrar = Reemplazos.ReemplazarBloque(txtMostrar.ToString(), "`", "<code>", "</code>");
