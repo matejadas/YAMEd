@@ -225,60 +225,53 @@ namespace pruebaEditorTxt
             // Aquí iremos guardando todas líneas, modificadas o no, para devolverlas al final
             StringBuilder sb = new StringBuilder();
 
-            // Buscamos las líneas que empiecen por el patrón. Las coincidencias se añadirán al MatchCollection (pero no la línea entera)
+            // Las listas no sólo empiezan por 1. , sino que hay más posibilidades, letras o números romanos en mayúsculas o minúsculas
             string patronNum = @"\d*\. ";
-            // string patronRomanMay = @"\bM{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})\b\. ";
-            // string patronRomanMin = @"\bm{0,4}(cm|cd|d?c{0,3})(xc|xl|l?x{0,3})(ix|iv|v?i{0,3})\b\. ";
-            // string patronLetrasMay = @"[A-Z]*\. ";
-            // string patronLetrasMin = @"[a-z]*\. ";
-            MatchCollection m = Regex.Matches(txt, patronNum);
+            string patronRomanMay = @"\bM{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})\b\. ";
+            string patronRomanMin = @"\bm{0,4}(cm|cd|d?c{0,3})(xc|xl|l?x{0,3})(ix|iv|v?i{0,3})\b\. ";
+            string patronLetrasMay = @"[A-Z]*\. ";
+            string patronLetrasMin = @"[a-z]*\. ";
 
-            // Las líneas del texto que empiecen por algún elemento del MatchCollection pertenecen a una lista
-            // Ponemos todos los <li></li>
-            for (int i = 0; i < lineasTxt.Count; i++)
+            List<string> patrones = new List<string>
             {
-                for (int j = 0; j < m.Count; j++)
-                {
-                    if (lineasTxt[i].StartsWith(m[j].ToString()))
-                    {
-                        lineasTxt[i] = lineasTxt[i].Insert(0, "<li>");
-                        lineasTxt[i] += "</li>";
-                        lineasTxt[i] = lineasTxt[i].Replace(m[j].ToString(), string.Empty);
-                    }
-                }
-            }
+                patronNum,
+                //patronRomanMay,
+                //patronRomanMin,
+                patronLetrasMay,
+                patronLetrasMin
+            };
 
-            // Delimitamos cada <ol>
-            //  type='{}'
-            for (int i = 0; i < lineasTxt.Count; i++)
+            // Buscamos las líneas que empiecen por cada patrón. Las coincidencias se añadirán al MatchCollection (pero no la línea entera)
+            foreach (string patron in patrones)
             {
-                if (lineasTxt[i].StartsWith("<li>"))
+                MatchCollection m = Regex.Matches(txt, patron);
+
+                if(m.Count > 0)
                 {
-                    try
+                    // Ponemos todos los <li></li>
+                    lineasTxt = DelimitarLi(m, lineasTxt);
+
+                    // Delimitamos cada <ol> y definimos el tipo <ol type="1">
+                    string tipo;
+
+                    switch (patrones.IndexOf(patron))
                     {
-                        if (!lineasTxt[i - 2].StartsWith("<li>") && lineasTxt[i - 1] == String.Empty)
-                        {
-                            lineasTxt[i - 1] += "<ol>";
-                        }
-                    }
-                    catch (ArgumentOutOfRangeException)
-                    {
-                        lineasTxt[i] = lineasTxt[i].Insert(0, "<ol>");
+                        case 0:
+                            tipo = "1";
+                            break;
+                        case 1:
+                            tipo = "A";
+                            break;
+                        case 2:
+                            tipo = "a";
+                            break;
+                        default:
+                            tipo = "1";
+                            break;
                     }
 
-                    try
-                    {
-                        if (!lineasTxt[i + 2].StartsWith("<li>") && lineasTxt[i + 1] == String.Empty)
-                        {
-                            lineasTxt[i + 1] += "</ol>";
-                        }
-                    }
-                    catch (ArgumentOutOfRangeException)
-                    {
-                        lineasTxt[i] += "</ol>";
-                    }
+                    lineasTxt = DelimitarOl(lineasTxt, tipo);
                 }
-
             }
 
             // Añadimos al StringBuilder
@@ -289,6 +282,60 @@ namespace pruebaEditorTxt
             }
 
             return sb;
+        }
+
+        private static List<string> DelimitarLi(MatchCollection matchCol, List<string> lista)
+        {
+            // Las líneas del texto que empiecen por algún elemento del MatchCollection pertenecen a una lista
+            for (int i = 0; i < lista.Count; i++)
+            {
+                for (int j = 0; j < matchCol.Count; j++)
+                {
+                    if (lista[i].StartsWith(matchCol[j].ToString()))
+                    {
+                        lista[i] = lista[i].Insert(0, "<li>");
+                        lista[i] += "</li>";
+                        lista[i] = lista[i].Replace(matchCol[j].ToString(), string.Empty);
+                    }
+                }
+            }
+
+            return lista;
+        }
+
+        private static List<string> DelimitarOl(List<string> lista, string tipo)
+        {
+            for (int i = 0; i < lista.Count; i++)
+            {
+                if (lista[i].StartsWith("<li>"))
+                {
+                    try
+                    {
+                        if (!lista[i - 2].StartsWith("<li>") && lista[i - 1] == String.Empty)
+                        {
+                            lista[i - 1] += $"<ol type='{tipo}'>";
+                        }
+                    }
+                    catch (ArgumentOutOfRangeException)
+                    {
+                        lista[i] = lista[i].Insert(0, $"<ol type='{tipo}'>");
+                    }
+
+                    try
+                    {
+                        if (!lista[i + 2].StartsWith("<li>") && lista[i + 1] == String.Empty)
+                        {
+                            lista[i + 1] += "</ol>";
+                        }
+                    }
+                    catch (ArgumentOutOfRangeException)
+                    {
+                        lista[i] += "</ol>";
+                    }
+                }
+            }
+
+            return lista;
         }
     }
 }
