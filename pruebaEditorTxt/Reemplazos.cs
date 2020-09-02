@@ -24,7 +24,6 @@ namespace pruebaEditorTxt
             return txt;
         }
 
-
         public static StringBuilder BuscarReemplazar(StringBuilder txt, string md, string htmlInicio, string htmlCierre)
         {
             // Busca una etiqueta Markdown y la sustituye por una html de inicio y una de cierre, p.ej. # -> <h1></h1>
@@ -351,9 +350,9 @@ namespace pruebaEditorTxt
                 {
                     try
                     {
-                        if (!lineas[i - 2].StartsWith("<li>") && lineas[i - 1] == String.Empty)
+                        if (!lineas[i - 1].StartsWith("<li>") && !lineas[i - 1].StartsWith("<ol"))
                         {
-                            lineas[i - 1] += $"<ol type='{tipo}'>";
+                            lineas[i] = lineas[i].Insert(0, $"<ol type='{tipo}'>");
                         }
                     }
                     catch (ArgumentOutOfRangeException)
@@ -363,9 +362,9 @@ namespace pruebaEditorTxt
 
                     try
                     {
-                        if (!lineas[i + 2].StartsWith("<li>") && lineas[i + 1] == String.Empty)
+                        if (!lineas[i + 1].StartsWith("<li>") && !lineas[i + 1].StartsWith("</ol"))
                         {
-                            lineas[i + 1] += "</ol>";
+                            lineas[i] += "</ol>";
                         }
                     }
                     catch (ArgumentOutOfRangeException)

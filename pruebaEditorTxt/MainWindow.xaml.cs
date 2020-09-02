@@ -176,9 +176,7 @@ namespace pruebaEditorTxt
                 {
                     LimpiarVentana();
                 }
-            }
-
-            
+            }            
         }
 
         private void LimpiarVentana()
@@ -235,7 +233,7 @@ namespace pruebaEditorTxt
 
             // Listas
             txtMostrar = Reemplazos.CrearListasOrdenadas(txtMostrar.ToString());
-            txtMostrar = Reemplazos.CrearListasSinOrdenar(txtMostrar.ToString());
+            //txtMostrar = Reemplazos.CrearListasSinOrdenar(txtMostrar.ToString());
 
             // Líneas horizontales
             txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "***", "<hr>");
@@ -373,7 +371,7 @@ namespace pruebaEditorTxt
 
         private void txtNuevo_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (VistaPrevia == true)
+            if (VistaPrevia == true && txtNuevo.Text !=String.Empty)
             {
                 if (Extension != ".md")
                 {
