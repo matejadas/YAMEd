@@ -147,6 +147,8 @@ namespace pruebaEditorTxt
 
         private void CerrarArchivo()
         {
+            OcultarWebBrowser();
+
             if (Ruta != null)  // Si hay un archivo abierto
             {
                 MessageBoxResult respuesta = MessageBox.Show("Hay un archivo abierto\n¿Desea guardar los cambios?", "Aviso", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
@@ -176,15 +178,15 @@ namespace pruebaEditorTxt
                 }
             }
 
-            OcultarWebBrowser();
+            
         }
 
         private void LimpiarVentana()
         {
-            txtNuevo.Text = String.Empty;
             Ruta = null;
             Extension = null;
             txtNuevo.Visibility = Visibility.Hidden;
+            txtNuevo.Text = String.Empty;
             this.Title = "YATE (Yet Another Text Editor)";
         }
 
@@ -221,6 +223,7 @@ namespace pruebaEditorTxt
 
         private void OcultarWebBrowser()
         {
+            VistaPrevia = false;
             grdContenido.Children.Remove(vistaWeb);
             txtNuevo.SetValue(Grid.ColumnSpanProperty, 2);
             txtNuevo.Margin = new Thickness(10, 10, 10, 10);
@@ -230,7 +233,7 @@ namespace pruebaEditorTxt
         {
             StringBuilder txtMostrar = new StringBuilder(txt);
 
-            // Listas ordenadas
+            // Listas
             txtMostrar = Reemplazos.CrearListasOrdenadas(txtMostrar.ToString());
             txtMostrar = Reemplazos.CrearListasSinOrdenar(txtMostrar.ToString());
 
@@ -238,11 +241,11 @@ namespace pruebaEditorTxt
             txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "***", "<hr>");
             txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "---", "<hr>");
 
-            //// Imágenes
-            //txtMostrar = Reemplazos.ReemplazarImagenes(txtMostrar.ToString());
+            // Imágenes
+            txtMostrar = Reemplazos.ReemplazarImagenes(txtMostrar.ToString());
 
-            //// Enlaces
-            //txtMostrar = Reemplazos.ReemplazarEnlaces(txtMostrar.ToString());
+            // Enlaces
+            txtMostrar = Reemplazos.ReemplazarEnlaces(txtMostrar.ToString());
 
             // Negrita
             txtMostrar = Reemplazos.ReemplazarBloque(txtMostrar.ToString(), "**", "<strong>", "</strong>");
@@ -252,19 +255,19 @@ namespace pruebaEditorTxt
             txtMostrar = Reemplazos.ReemplazarBloque(txtMostrar.ToString(), "*", "<em>", "</em>");
             txtMostrar = Reemplazos.ReemplazarBloque(txtMostrar.ToString(), "_", "<em>", "</em>");
 
-            //// Texto monoespacio
-            //txtMostrar = Reemplazos.ReemplazarBloque(txtMostrar.ToString(), "`", "<code>", "</code>");
+            // Texto monoespacio
+            txtMostrar = Reemplazos.ReemplazarBloque(txtMostrar.ToString(), "`", "<code>", "</code>");
 
-            //// Encabezados
-            //txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "###### ", "</p><h6>", "</h6><p>");
-            //txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "##### ", "</p><h5>", "</h5><p>");
-            //txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "#### ", "</p><h4>", "</h4><p>");
-            //txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "### ", "</p><h3>", "</h3><p>");
-            //txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "## ", "</p><h2>", "</h2><p>");
-            //txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "# ", "</p><h1>", "</h1><p>");
+            // Encabezados
+            txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "###### ", "</p><h6>", "</h6><p>");
+            txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "##### ", "</p><h5>", "</h5><p>");
+            txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "#### ", "</p><h4>", "</h4><p>");
+            txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "### ", "</p><h3>", "</h3><p>");
+            txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "## ", "</p><h2>", "</h2><p>");
+            txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "# ", "</p><h1>", "</h1><p>");
 
-            //// Citas
-            //txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "> ", "<blockquote>", "</blockquote>");
+            // Citas
+            txtMostrar = Reemplazos.BuscarReemplazar(txtMostrar, "> ", "<blockquote>", "</blockquote>");
 
             // Párrafos
             txtMostrar = Reemplazos.ReemplazarParrafos(txtMostrar);
@@ -375,12 +378,12 @@ namespace pruebaEditorTxt
                 if (Extension != ".md")
                 {
                     // Obtenemos el texto del textbox directamente si no es Markdown. Si es HTML el WebBrowser sabe interpretar las tags
-                    if (txtNuevo.Text != String.Empty) vistaWeb.NavigateToString(txtNuevo.Text);
+                    vistaWeb.NavigateToString(txtNuevo.Text);
                 }
                 else
                 {
                     // Si es Markdown hay que reemplazar las tags de Markdown por las de HTML
-                    if (txtNuevo.Text != String.Empty) vistaWeb.NavigateToString(GenerarDesdeMarkdown(txtNuevo.Text));
+                    vistaWeb.NavigateToString(GenerarDesdeMarkdown(txtNuevo.Text));
                 }
             }
         }
@@ -463,5 +466,4 @@ namespace pruebaEditorTxt
     }
 }
 
-// TODO Listas ordenadas y sin ordenar
 // TODO Bloques de código

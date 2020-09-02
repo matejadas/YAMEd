@@ -25,7 +25,7 @@ namespace pruebaEditorTxt
             TabSize = 4;
         }
 
-        protected override void OnPreviewKeyDown( KeyEventArgs e)
+        protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
             if (e.Key == Key.Tab)
             {

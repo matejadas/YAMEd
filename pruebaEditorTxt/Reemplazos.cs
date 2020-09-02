@@ -65,18 +65,18 @@ namespace pruebaEditorTxt
         }
 
         public static StringBuilder ReemplazarParrafos(StringBuilder txt)
-        {
+        {            
             List<string> lineas = new List<string>(Regex.Split(txt.ToString(), Environment.NewLine));
 
-            for (int i = 1; i < lineas.Count; i++)
+            for (int i = 0; i < lineas.Count; i++)
             {
-                if (lineas[i] == String.Empty)
+                if (lineas[i] == String.Empty && !lineas[i - 1].EndsWith("<p>"))
                 {
-                    if(!lineas[i - 1].EndsWith("</li>"))
+                    if (!lineas[i - 1].EndsWith("</li>"))
                     {
                         lineas[i - 1] += "</p>";
                         lineas[i] = lineas[i].Insert(0, "<p>");
-                    }                    
+                    }
                 }
             }
 
